@@ -1,7 +1,7 @@
 export type Status = 'available' | 'active' | 'cancel' | 'done';
 
 export type Todo = {
-  _id: number;
+  _id: string;
   title: string;
   description: string;
   status: Status;
