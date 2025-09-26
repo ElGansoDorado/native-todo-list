@@ -9,6 +9,7 @@ yarn-error.log*
 
 # Build artifacts
 /backend/build
+/backend/dist
 /backend/out
 
 # Editor/OS specific files
