@@ -2,23 +2,15 @@ import { styles } from './style';
 
 import React from 'react';
 import { ScrollView, Text } from 'react-native';
-import { View, Button, Flex } from '@ant-design/react-native';
+import { View, Button } from '@ant-design/react-native';
+import ListCard from './list-card';
+
 import { useRouter } from 'expo-router';
-import { useState, useEffect } from 'react';
-import { Todo } from '@/shared/model/todo.type';
-import { getTodos } from '@/shared/api'; 
+import { useList } from './use-list';
 
 function ListScreen() {
+  const { data, loader } = useList();
   const router = useRouter();
-  const [data, setData] = useState<Todo[]>()
-
-  useEffect(() => {
-    const fechTodo = async () => {
-      setData(await getTodos());
-    }
-
-    fechTodo();
-  }, []);
 
   const openModal = () => {
     router.push('/modal');
@@ -34,10 +26,11 @@ function ListScreen() {
         <Text style={styles.subtitle}>Здесь будет список созданных задач</Text>
 
         <View style={styles.taskList}>
-          {data?.map((item) => <Flex key={item._id}>
-            <Text>{item.title}</Text>
-            <Text>{item.status}</Text>  
-          </Flex>)}
+          {loader ? (
+            <View>Loader...</View>
+          ) : (
+            data?.map((item) => <ListCard key={item._id} todo={item} />)
+          )}
         </View>
       </ScrollView>
 

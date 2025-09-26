@@ -26,6 +26,7 @@ export const styles = StyleSheet.create({
   },
   taskList: {
     backgroundColor: 'white',
+    gap: 12,
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
