@@ -5,6 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "start": "node --env-file=.env dist/index.js",
+    "start:render": "node dist/index.js",
     "dev": "nodemon",
     "format": "npx prettier . --write",
     "build": "tsc"
