@@ -3,15 +3,15 @@ import cors from 'cors';
 import todosRouter from './todos/router.js';
 import { client } from './shared/api/mongodb-client.js';
 
-const PORT = 5000;
+const PORT = process.env.PORT;
 const app = express();
 
 const corsOptions: cors.CorsOptions = {
-    origin: 'http://localhost:8081',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-    optionsSuccessStatus: 200
+  origin: 'http://localhost:8081',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
