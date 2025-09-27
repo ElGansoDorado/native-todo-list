@@ -1,4 +1,5 @@
-import { RequestTodo, Status } from '@/shared/model/todo.type';
+import { addTodo } from '@/shared/api';
+import { RequestTodo } from '@/shared/model/todo.type';
 import {
   View,
   Button,
@@ -9,6 +10,7 @@ import {
   List,
   Flex as Row,
 } from '@ant-design/react-native';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
@@ -30,12 +32,31 @@ function ModalForm() {
   const router = useRouter();
   const [form] = Form.useForm();
 
+  const { TextArea } = Input;
+
   const onSubmit = () => {
     form.submit();
   };
 
-  const onFinish = (values: FormValues) => {
-    console.log('Success:', values);
+  const addMutation = useMutation({
+    mutationFn: addTodo,
+  });
+
+  const onFinish = async (values: FormValues) => {
+    const statusValue = Array.isArray(values.status)
+      ? values.status[0]
+      : values.status;
+
+    const req: RequestTodo = {
+      title: values.title ?? '',
+      description: values.description ?? '',
+      status: statusValue ?? 'available',
+    };
+
+    if (req.title) {
+      addMutation.mutate(req);
+      router.back();
+    }
   };
 
   const onFinishFailed = (errorInfo: FormError) => {
@@ -74,9 +95,9 @@ function ModalForm() {
             </Form.Item>
 
             <Form.Item name="description">
-              <Input
-                placeholder="Enter a description of your task..."
-                maxLength={200}
+              <TextArea
+                placeholder="Autosize height with minimum and maximum number of lines"
+                autoSize={{ minRows: 6, maxRows: 6 }}
               />
             </Form.Item>
 

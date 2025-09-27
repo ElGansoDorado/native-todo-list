@@ -48,6 +48,9 @@ export const addTodo = async (reqTodo: RequestTodo) => {
   try {
     const response = await fetch(BASE_URL, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(reqTodo),
     });
 
@@ -66,6 +69,9 @@ export const updateTodo = async (reqTodo: Todo) => {
   try {
     const response = await fetch(BASE_URL, {
       method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
     if (!response.ok) {
@@ -83,6 +89,9 @@ export const deleteTodo = async (id: string) => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
     if (!response.ok) {
