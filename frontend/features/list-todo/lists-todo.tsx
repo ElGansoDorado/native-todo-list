@@ -15,11 +15,11 @@ function ListScreen() {
   const router = useRouter();
 
   const openModal = () => {
-    router.push('/modal');
+    router.push('/modal/create');
   };
 
   const editTodo = (_id: string) => {
-    router.push(`/modal/${_id}`);
+    router.push(`/modal/edit?todoId=${_id}`);
   };
 
   return (

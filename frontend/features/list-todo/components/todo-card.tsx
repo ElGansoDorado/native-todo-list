@@ -5,7 +5,7 @@ import {
   View,
   Flex as Row,
 } from '@ant-design/react-native';
-import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
+// import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
 import { Todo } from '@/shared/model/todo.type';
 import { StyleSheet } from 'react-native';
 
@@ -22,10 +22,10 @@ function ListCard({ todo, removeTodo, editTodo }: TodoCardProps) {
     return (
       <Row style={styles.row}>
         <Button type="warning" size="small" onPress={removeTodo}>
-          <DeleteOutlined />
+          🗑️
         </Button>
         <Button type="primary" size="small" onPress={editTodo}>
-          <FormOutlined />
+          ✏️
         </Button>
       </Row>
     );

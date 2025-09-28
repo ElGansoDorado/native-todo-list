@@ -12,9 +12,11 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 
 function ModalScreen() {
   const router = useRouter();
-  const { id } = useLocalSearchParams();
+  const { todoId } = useLocalSearchParams();
   const updateMutation = useUpdateTodo();
-  const { data, isLoading } = useOneTodo(Array.isArray(id) ? id[0] : id);
+  const { data, isLoading } = useOneTodo(
+    Array.isArray(todoId) ? todoId[0] : todoId
+  );
 
   const initValues: TodoFormInitValues = {
     title: data?.title ?? '',
@@ -35,8 +37,6 @@ function ModalScreen() {
       dateCreate: data?.dateCreate ?? new Date(),
     };
 
-    console.log(req);
-
     if (req.title) {
       updateMutation.mutate(req);
       router.back();
@@ -48,7 +48,7 @@ function ModalScreen() {
   };
 
   const onCancel = () => {
-    router.push('/');
+    router.back();
   };
 
   if (isLoading) return <View>Loading...</View>;
