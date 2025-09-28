@@ -2,10 +2,8 @@ import {
   Button,
   Card,
   Text,
-  View,
   Flex as Row,
 } from '@ant-design/react-native';
-// import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
 import { Todo } from '@/shared/model/todo.type';
 import { StyleSheet } from 'react-native';
 
