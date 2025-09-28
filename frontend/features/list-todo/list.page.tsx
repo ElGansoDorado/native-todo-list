@@ -6,19 +6,21 @@ import { View, Button } from '@ant-design/react-native';
 import ListCard from './components/todo-card';
 
 import { useRouter } from 'expo-router';
-import { useListTodo, useDeleteTodo } from './hooks/use-list';
-import { deleteTodo } from '@/shared/api';
-import { useMutation } from '@tanstack/react-query';
+import { useListTodo, useDeleteTodo } from './queries';
 
 function ListScreen() {
   const { data, isLoading } = useListTodo();
+  const deleteMutation = useDeleteTodo();
+
   const router = useRouter();
 
   const openModal = () => {
     router.push('/modal');
   };
 
-  const deleteMutation = useDeleteTodo();
+  const editTodo = (_id: string) => {
+    router.push(`/modal/${_id}`);
+  };
 
   return (
     <View style={styles.container}>
@@ -38,6 +40,7 @@ function ListScreen() {
                 key={item._id}
                 todo={item}
                 removeTodo={() => deleteMutation.mutate(item._id)}
+                editTodo={() => editTodo(item._id)}
               />
             ))
           )}

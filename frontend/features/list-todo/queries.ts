@@ -1,4 +1,4 @@
-import { getTodos, deleteTodo } from '@/shared/api';
+import { getTodos, deleteTodo } from '@/shared/api/api';
 import { Todo } from '@/shared/model/todo.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 

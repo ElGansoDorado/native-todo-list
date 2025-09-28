@@ -1,4 +1,4 @@
-import { RequestTodo, Todo } from './model/todo.type';
+import { RequestTodo, Todo } from '../model/todo.type';
 
 const BASE_URL = 'https://native-todo-list.onrender.com/api/todos';
 
@@ -23,46 +23,38 @@ export const getTodos = async () => {
   }
 };
 
-export const getTodo = async (id: string) => {
-  try {
-    const response = await fetch(`${BASE_URL}/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    });
+export const getTodo = async (_id: string) => {
+  const response = await fetch(`${BASE_URL}/${_id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+  });
 
-    if (!response.ok) {
-      console.log(response.statusText);
-    }
-
-    const todos: Todo = await response.json();
-    return todos;
-  } catch (e) {
-    console.error(e);
+  if (!response.ok) {
+    console.log(response.statusText);
   }
+
+  const todos: Todo = await response.json();
+  return todos;
 };
 
 export const addTodo = async (reqTodo: RequestTodo) => {
-  try {
-    const response = await fetch(BASE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(reqTodo),
-    });
+  const response = await fetch(BASE_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(reqTodo),
+  });
 
-    if (!response.ok) {
-      console.log(response.statusText);
-    }
-
-    const todos: Todo = await response.json();
-    return todos;
-  } catch (e) {
-    console.error(e);
+  if (!response.ok) {
+    console.log(response.statusText);
   }
+
+  const todos: Todo = await response.json();
+  return todos;
 };
 
 export const updateTodo = async (reqTodo: Todo) => {
@@ -72,6 +64,7 @@ export const updateTodo = async (reqTodo: Todo) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(reqTodo),
     });
 
     if (!response.ok) {

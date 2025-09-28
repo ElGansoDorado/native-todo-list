@@ -11,27 +11,20 @@ import { StyleSheet } from 'react-native';
 
 type TodoCardProps = {
   todo: Todo;
-  removeTodo: (_id: string) => void;
+  removeTodo: () => void;
+  editTodo: () => void;
 };
 
-function ListCard({ todo, removeTodo }: TodoCardProps) {
+function ListCard({ todo, removeTodo, editTodo }: TodoCardProps) {
   const date = new Date(todo.dateCreate).toISOString().split('T')[0];
 
   const CardMenu = () => {
     return (
       <Row style={styles.row}>
-        <Button
-          type="warning"
-          size="small"
-          onPress={() => removeTodo(todo._id)}
-        >
+        <Button type="warning" size="small" onPress={removeTodo}>
           <DeleteOutlined />
         </Button>
-        <Button
-          type="primary"
-          size="small"
-          onPress={() => removeTodo(todo._id)}
-        >
+        <Button type="primary" size="small" onPress={editTodo}>
           <FormOutlined />
         </Button>
       </Row>

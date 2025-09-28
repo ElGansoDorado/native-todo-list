@@ -13,3 +13,16 @@ export type RequestTodo = {
   description: string;
   status: Status;
 };
+
+export type TodoFormInitValues = Omit<RequestTodo, 'status'> & {
+  status: Status[];
+};
+
+export type TodoFormError = {
+  values: RequestTodo;
+  errorFields: {
+    name: (string | number)[];
+    errors: string[];
+  }[];
+  outOfDate: boolean;
+};

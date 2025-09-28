@@ -17,6 +17,10 @@ export default function RootLayout() {
             name="modal"
             options={{ presentation: 'modal', title: 'Modal' }}
           />
+          <Stack.Screen
+            name="[id]"
+            options={{ presentation: 'modal', title: 'Modal id' }}
+          />
         </Stack>
 
         <StatusBar style="auto" />

@@ -1,5 +1,8 @@
-import { addTodo } from '@/shared/api';
-import { RequestTodo } from '@/shared/model/todo.type';
+import {
+  RequestTodo,
+  TodoFormError,
+  TodoFormInitValues,
+} from '@/shared/model/todo.type';
 import {
   View,
   Button,
@@ -10,57 +13,31 @@ import {
   List,
   Flex as Row,
 } from '@ant-design/react-native';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'expo-router';
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
+import { styles } from './style';
 
 const Col = Row.Item;
 
-type FormValues = Partial<RequestTodo>;
+type ModalFormProps = {
+  onFinish: (value: RequestTodo) => void;
+  onFinishFailed?: (errorInfo: TodoFormError) => void;
+  onCancel: () => void;
+  initValues: TodoFormInitValues;
+};
 
-interface FormError {
-  values: FormValues;
-  errorFields: {
-    name: (string | number)[];
-    errors: string[];
-  }[];
-  outOfDate: boolean;
-}
-
-function ModalForm() {
-  const router = useRouter();
+function ModalForm({
+  onFinish,
+  onFinishFailed,
+  onCancel,
+  initValues,
+}: ModalFormProps) {
   const [form] = Form.useForm();
 
   const { TextArea } = Input;
 
   const onSubmit = () => {
     form.submit();
-  };
-
-  const addMutation = useMutation({
-    mutationFn: addTodo,
-  });
-
-  const onFinish = async (values: FormValues) => {
-    const statusValue = Array.isArray(values.status)
-      ? values.status[0]
-      : values.status;
-
-    const req: RequestTodo = {
-      title: values.title ?? '',
-      description: values.description ?? '',
-      status: statusValue ?? 'available',
-    };
-
-    if (req.title) {
-      addMutation.mutate(req);
-      router.back();
-    }
-  };
-
-  const onFinishFailed = (errorInfo: FormError) => {
-    console.log('Failed:', errorInfo);
   };
 
   const status = [
@@ -83,11 +60,7 @@ function ModalForm() {
             form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            initialValues={{
-              title: '',
-              description: '',
-              status: ['available'],
-            }}
+            initialValues={initValues}
             style={styles.form}
           >
             <Form.Item name="title">
@@ -117,11 +90,11 @@ function ModalForm() {
         <View style={styles.footer}>
           <Row>
             <Col style={{ marginRight: 10, flex: 1 }}>
-              <Button onPress={() => router.back()}>Отменить</Button>
+              <Button onPress={onCancel}>Отменить</Button>
             </Col>
             <Col style={{ flex: 1 }}>
               <Button type="primary" onPress={onSubmit}>
-                Добавить
+                Принять
               </Button>
             </Col>
           </Row>
@@ -130,49 +103,5 @@ function ModalForm() {
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingBottom: 100,
-  },
-  form: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    backgroundColor: '#ffffff',
-    margin: 16,
-    marginBottom: 0,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-});
 
 export default ModalForm;

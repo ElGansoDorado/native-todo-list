@@ -1,19 +1,24 @@
 import { ModalForm } from '@/features/modal-todo';
-import { useAddTodo } from '@/shared/api/queries';
+import { useOneTodo, useUpdateTodo } from '@/shared/api/queries';
 import {
   RequestTodo,
+  Todo,
   TodoFormError,
   TodoFormInitValues,
 } from '@/shared/model/todo.type';
-import { useRouter } from 'expo-router';
+import { View } from '@ant-design/react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 function ModalScreen() {
   const router = useRouter();
-  const addMutation = useAddTodo();
+  const { id } = useLocalSearchParams();
+  const updateMutation = useUpdateTodo();
+  const { data, isLoading } = useOneTodo(Array.isArray(id) ? id[0] : id);
+
   const initValues: TodoFormInitValues = {
-    title: '',
-    description: '',
-    status: ['available'],
+    title: data?.title ?? '',
+    description: data?.description ?? '',
+    status: [data?.status ?? 'available'],
   };
 
   const onFinish = async (values: RequestTodo) => {
@@ -21,14 +26,18 @@ function ModalScreen() {
       ? values.status[0]
       : values.status;
 
-    const req: RequestTodo = {
+    const req: Todo = {
+      _id: data?._id ?? '',
       title: values.title ?? '',
       description: values.description ?? '',
       status: statusValue ?? 'available',
+      dateCreate: data?.dateCreate ?? new Date(),
     };
 
+    console.log(req);
+
     if (req.title) {
-      addMutation.mutate(req);
+      updateMutation.mutate(req);
       router.back();
     }
   };
@@ -38,8 +47,10 @@ function ModalScreen() {
   };
 
   const onCancel = () => {
-    router.back();
+    router.push('/');
   };
+
+  if (isLoading) return <View>Loading...</View>;
 
   return <ModalForm {...{ onFinish, onFinishFailed, onCancel, initValues }} />;
 }
