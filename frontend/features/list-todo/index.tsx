@@ -1,3 +1,3 @@
-import ListScreen from './list.page';
+import ListScreen from './lists-todo';
 
 export { ListScreen };
